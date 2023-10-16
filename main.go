@@ -57,12 +57,12 @@ func foo(w http.ResponseWriter, r *http.Request) {
 }
 
 func bar(w http.ResponseWriter, r *http.Request) {
-	var p1 person
+	var xp []person
 
-	err := json.NewDecoder(r.Body).Decode(&p1)
+	err := json.NewDecoder(r.Body).Decode(&xp)
 	if err != nil {
 		log.Println("Bad data to decode", err)
 	}
 
-	log.Println("Person", p1)
+	log.Println("Person", xp)
 }
