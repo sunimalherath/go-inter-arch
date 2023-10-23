@@ -5,11 +5,30 @@ import (
 	"crypto/sha512"
 	"fmt"
 	"log"
+	"time"
 
+	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
 )
 
 var key = []byte{}
+
+type UserClaims struct {
+	jwt.StandardClaims
+	SessionID int64 // to represent your own fields.
+}
+
+func (u *UserClaims) Valid() error {
+	if !u.VerifyExpiresAt(time.Now().Unix(), true) {
+		return fmt.Errorf("token has expired")
+	}
+
+	if u.SessionID == 0 {
+		return fmt.Errorf("invalid session ID")
+	}
+
+	return nil
+}
 
 func main() {
 	for i := 1; i <= 64; i++ {
